@@ -5,6 +5,10 @@
   "permissions": [
   ],
 
+  "background": {
+    "scripts": ["background.js"]
+  },
+
   "options_page": "options.html",
 
   "browser_action": {

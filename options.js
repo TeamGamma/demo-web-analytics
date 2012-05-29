@@ -48,7 +48,7 @@ function restore_rules() {
     console.log('Restoring rules from localStorage');
 
     try {
-        rules_list = JSON.parse(localStorage["rules"]);
+        rules_list = JSON.parse(localStorage.rules);
     } catch(err) {
         rules_list = [];
         return;
