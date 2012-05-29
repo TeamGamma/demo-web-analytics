@@ -1,0 +1,16 @@
+td .close {
+    float: none;
+    text-align: center;
+}
+
+#listing td:first-child {
+    width: 1em;
+}
+
+footer {
+    opacity: 0.4;
+}
+
+footer:hover {
+    opacity: 0.6;
+}

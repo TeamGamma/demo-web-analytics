@@ -1,61 +1,96 @@
 <!doctype html>
 <html>
-<head>
-    <title>Options Page</title>
+    <head>
+        <title>Options Page</title>
+
+        <!-- CSS -->
+        <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="options.css" rel="stylesheet" />
+
+        <!-- Templates -->
+        <script id="rule" type="text/html">
+            <tr>
+                <td><a class="close delete-rule" href="#">&times;</a></td>
+                <td>{{ event_type }}</td>
+                <td>{{ selector }}</td>
+                <td>{{ replacement }}</td>
+            </tr>
+        </script>
+
+        <!-- JavaScript -->
+        <script src="jquery-1.6.4.min.js"></script>
+        <script src="ICanHaz.min.js"></script>
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div class="row">
+                <div class="span12" style="margin-top: 1em">
+                    <legend>Options Page</legend>
 
 
-    <script src="jquery-1.6.4.min.js"></script>
-    <script src="ICanHaz.min.js"></script>
+                    <div class="row">
 
-    <script type="text/javascript">
-    // Saves options to localStorage.
-    function save_options() {
-        var select = document.getElementById("color");
-        var color = select.children[select.selectedIndex].value;
-        localStorage["favorite_color"] = color;
+                        <div class="span4">
+                            <form id="add_form" class="well">
+                                <div class="control-group">
+                                    <label for="event_type">Type of event:</label>
+                                    <select name="event_type">
+                                        <option value="red">red</option>
+                                        <option value="green">green</option>
+                                        <option value="blue">blue</option>
+                                        <option value="yellow">yellow</option>
+                                    </select>
+                                </div>
 
-        // Update status to let user know options were saved.
-        var status = document.getElementById("status");
-        status.innerHTML = "Options Saved.";
-        setTimeout(function() {
-                status.innerHTML = "";
-                }, 750);
-    }
+                                <div class="control-group">
+                                    <label for="selector">Destination for new content</label>
+                                    <input type="text" name="selector" placeholder="#banner, .content"/>
+                                </div>
 
-    // Restores select box state to saved value from localStorage.
-    function restore_options() {
-        var favorite = localStorage["favorite_color"];
-        if (!favorite) {
-            return;
-        }
-        var select = document.getElementById("color");
-        for (var i = 0; i < select.children.length; i++) {
-            var child = select.children[i];
-            if (child.value == favorite) {
-                child.selected = "true";
-                break;
-            }
-        }
-    }
-</script>
+                                <div class="control-group">
+                                    <label for="replacement">New content:</label>
+                                    <input type="text" name="replacement" placeholder="hello world"/>
+                                </div>
 
-<link href="options.css" rel="stylesheet" />
+                                <button class="btn" type="submit" name="add">Add</button>
+                            </form>
+                        </div>
 
-</head>
+                        <div class="span8">
+                            <table id="rules" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Event</th>
+                                        <th>Content Holder</th>
+                                        <th>New Content</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
-<body onload="restore_options()">
-    <h1>Options Page</h1>
+                    <div class="row">
+                        <div class="span4">
+                            <div id=status class="alert hide"></div>
+                        </div>
+                    </div>
 
-    <div id=status></div>
+                </div>
+            </div>
 
-    Favorite Color:
-    <select id="color">
-        <option value="red">red</option>
-        <option value="green">green</option>
-        <option value="blue">blue</option>
-        <option value="yellow">yellow</option>
-    </select>
-    <br>
-    <button onclick="save_options()">Save</button>
-</body>
+            <hr>
+
+            <footer>
+            <p>&copy; Team Gamma 2012</p>
+            </footer>
+
+        </div> <!-- /container -->
+
+        <script type="text/javascript" src="options.js"></script>
+  </body>
 </html>
