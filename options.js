@@ -1,5 +1,6 @@
 
 var rules_list = [];
+var events = {};
 var rules_table = $('#rules');
 var add_form = $('#add_form');
 
@@ -43,19 +44,26 @@ function update_status(text, alert_class) {
     }, 1500);
 }
 
-// Restores rules from localStorage.
-function restore_rules() {
+// Restores data from localStorage.
+function restore_data() {
     console.log('Restoring rules from localStorage');
 
     try {
         rules_list = JSON.parse(localStorage.rules);
+        events = JSON.parse(localStorage.events);
     } catch(err) {
         rules_list = [];
+        events = {};
         return;
     }
-    $(rules_list).each(function(i, rule) {
+    $.each(rules_list, function(i, rule) {
         console.log(rule);
         $(rules_table).append(ich.rule(this));
+    });
+
+    $.each(events, function(event_name) {
+      var select = $('select[name=event_type]');
+      select.append('<option name=' + event_name + '>' + event_name + '</option>');
     });
 }
 
@@ -70,7 +78,7 @@ function restore_rules() {
 })( jQuery );
 
 $(function() {
-    restore_rules();
+    restore_data();
 
     // Submit handler for #add_form
     $('#add_form').bind('submit', save_rule);
