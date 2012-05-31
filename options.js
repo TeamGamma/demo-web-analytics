@@ -80,8 +80,13 @@ function restore_data() {
 $(function() {
     restore_data();
 
-    // Submit handler for #add_form
+    // Submit handler for #add_form form
     $('#add_form').bind('submit', save_rule);
+
+    // Submit handler for #clear_history button
+    $('#clear_history').bind('click', function() {
+      chrome.extension.sendRequest({type: "clearHistory"});
+    });
 
     // Handler for delete buttons
     $('.delete-rule').live('click', function() {

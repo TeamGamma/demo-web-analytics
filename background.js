@@ -36,11 +36,20 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
     console.log('Received a message ' + (sender.tab ?
                 "from a content script:" + sender.tab.url :
                 "from the extension"));
-    if (request.type === "get_options") {
+    if (request.type === "getOptions") {
       sendResponse({
         rules: localStorage.rules,
-        events: localStorage.events,
+        events: localStorage.events
       });
     }
+});
+
+// Listen for "clear history" button and forward message to content scripts
+chrome.extension.onConnect.addListener(function(port) {
+  chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+    if (request.type === "clearHistory") {
+      port.postMessage({clearHistory: true});
+    }
+  });
 });
 

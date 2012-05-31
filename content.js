@@ -13,7 +13,7 @@ if('history' in localStorage) {
 }
 
 // Load rules from background script
-chrome.extension.sendRequest({type: "get_options"}, function(data) {
+chrome.extension.sendRequest({type: "getOptions"}, function(data) {
   rules = JSON.parse(data.rules);
   events = JSON.parse(data.events);
   localStorage.rules = data.rules;
@@ -21,6 +21,15 @@ chrome.extension.sendRequest({type: "get_options"}, function(data) {
 
   initRules();
   initEvents();
+});
+
+var port = chrome.extension.connect();
+port.onMessage.addListener(function(data) {
+  if(data.clearHistory) {
+      console.warn('Clearing history for this page...');
+      history = {};
+      localStorage.history = JSON.stringify(history);
+  }
 });
 
 function triggerHandlers(eventName, data) {
@@ -63,7 +72,7 @@ function initEvents() {
   // History event
   var path = window.location.pathname;
   // Initialize counter for this page
-  if(!(path in history)) {
+  if(!(path in history) || history[path] === null) {
       history[path] = 0;
       localStorage.history = JSON.stringify(history);
   }
