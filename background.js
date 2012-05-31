@@ -16,9 +16,8 @@ if(typeof localStorage.rules === 'undefined' ||
       time: 10000,
       handlers: []
     },
-    // User has visited a certain number of unique pages
-    n_pages: {
-      pages: 5,
+    // User has visited a set of pages for a given amount of time
+    history: {
       handlers: []
     },
     // User scrolls below the fold
@@ -38,7 +37,10 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
                 "from a content script:" + sender.tab.url :
                 "from the extension"));
     if (request.type === "get_options") {
-      sendResponse({ rules: localStorage.rules, events: localStorage.events });
+      sendResponse({
+        rules: localStorage.rules,
+        events: localStorage.events,
+      });
     }
 });
 
