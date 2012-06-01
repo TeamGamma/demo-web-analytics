@@ -71,7 +71,7 @@ function restore_data() {
     $.fn.serializeJSON = function() {
         var json = {};
         $.map($(this).serializeArray(), function(n, i){
-            json[n['name']] = n['value'];
+            json[n.name] = n.value;
         });
         return json;
     };
@@ -86,6 +86,7 @@ $(function() {
     // Submit handler for #clear_history button
     $('#clear_history').bind('click', function() {
       chrome.extension.sendRequest({type: "clearHistory"});
+      update_status("Cleared site history", 'alert-success');
     });
 
     // Handler for delete buttons
@@ -109,4 +110,5 @@ $(function() {
         return false;
     });
 });
+
 

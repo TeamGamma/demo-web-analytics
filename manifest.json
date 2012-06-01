@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Demo of real-time analytics and content modification framework",
   "permissions": [
+    "tabs", "http://*/*"
   ],
 
   "background": {

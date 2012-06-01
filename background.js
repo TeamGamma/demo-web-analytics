@@ -41,6 +41,10 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
         rules: localStorage.rules,
         events: localStorage.events
       });
+    } 
+    else if(request.type === 'injectScripts') {
+      console.log(sender.tab.id);
+      chrome.tabs.executeScript(sender.tab.id, {file: "analytics.js"});
     }
 });
 
