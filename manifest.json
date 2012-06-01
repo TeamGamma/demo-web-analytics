@@ -11,11 +11,6 @@
 
   "options_page": "options.html",
 
-  "browser_action": {
-    "default_icon": "icon.png",
-    "popup": "popup.html"
-  },
-
   "content_scripts": [
     {
       "matches": ["http://solacesystems.com/*"],
