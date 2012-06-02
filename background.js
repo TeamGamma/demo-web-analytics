@@ -1,9 +1,11 @@
 var events;
 
 if(typeof localStorage.rules === 'undefined' ||
-   typeof localStorage.events === 'undefined') {
+   typeof localStorage.events === 'undefined' ||
+   typeof localStorage.options === 'undefined') {
   console.log('Initializing data...');
   localStorage.rules = "[]";
+  localStorage.options = "{}";
 
   events = {
     // User remains on the page for a minimum time
@@ -36,11 +38,15 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
     console.log('Received a message ' + (sender.tab ?
                 "from a content script:" + sender.tab.url :
                 "from the extension"));
+    console.log(request);
+
     if (request.type === "getOptions") {
-      sendResponse({
+      var response = {
         rules: localStorage.rules,
-        events: localStorage.events
-      });
+        events: localStorage.events,
+        options: localStorage.options
+      };
+      sendResponse(response);
     } 
     else if(request.type === 'injectScripts') {
       console.log(sender.tab.id);

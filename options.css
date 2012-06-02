@@ -14,3 +14,14 @@ footer {
 footer:hover {
     opacity: 0.6;
 }
+
+.controls .help-block {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    margin-left: 18px;
+    opacity: 0.8;
+}
+
+.controls .checkbox span {
+    font-weight: bold;
+}

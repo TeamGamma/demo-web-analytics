@@ -1,6 +1,7 @@
 
 var rules_list = [];
 var events = {};
+var options = {};
 var rules_table = $('#rules');
 var add_form = $('#add_form');
 
@@ -79,6 +80,24 @@ function restore_data() {
 
 $(function() {
     restore_data();
+
+    // Save and restore analytics options
+    if('options' in localStorage) {
+      options = JSON.parse(localStorage.options);
+    } else {
+      options = {};
+    }
+    $('input[type=checkbox]').change(function() {
+      var name = $(this).attr('name'), value = this.checked;
+      options[name] = value;
+      localStorage.options = JSON.stringify(options);
+    })
+    .each(function() {
+      var name = $(this).attr('name');
+      if(name in options) {
+          $(this).prop('checked', options[name]);
+      }
+    });
 
     // Submit handler for #add_form form
     $('#add_form').bind('submit', save_rule);

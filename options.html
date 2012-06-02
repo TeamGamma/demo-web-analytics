@@ -17,9 +17,6 @@
             </tr>
         </script>
 
-        <!-- JavaScript -->
-        <script src="jquery-1.6.4.min.js"></script>
-        <script src="ICanHaz.min.js"></script>
     </head>
 
     <body>
@@ -30,10 +27,72 @@
                     <legend>Options Page</legend>
 
                     <div class="row">
-                        <div class="span12">
-                            <form class="well">
-                                <legend>Enabled Scripts</legend>
-                            </form>
+                        <div class="span12 tabbable">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#solace" data-toggle="tab">solacesystems.com</a></li>
+                                <li><a href="#ebay" data-toggle="tab">ebay.com</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+
+                                <form id="solace" class="well form-horizontal tab-pane active">
+
+                                    <div class="control-group">
+                                        <label class="control-label" for="optionsCheckboxList">Analytics</label>
+
+                                        <div class="controls">
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="solace-interest-detection">
+                                                <span>Interest Detection</span>
+                                            </label>
+                                            <p class="help-block">Detect when the user has shown interest in the current page by remaining active on the page for a given period</p>
+
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="solace-content-viewing">
+                                                <span>Content Viewing</span>
+                                            </label>
+                                            <p class="help-block">Detect when the user is likely looking at a piece of content based on scroll/mouse position</p>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group">
+                                        <label class="control-label" for="optionsCheckboxList">Content Modification</label>
+
+                                        <div class="controls">
+
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="solace-extra-content">
+                                                <span>Show Extra Content</span>
+                                            </label>
+                                            <p class="help-block">Show extra content that was hidden when the page was first loaded</p>
+
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="solace-sidebar">
+                                                <span>Sidebar Content</span>
+                                            </label>
+                                            <p class="help-block">Display a sidebar containing some related content</p>
+
+                                        </div>
+                                    </div>
+
+                                </form>
+
+                                <form id="ebay" class="well form-horizontal tab-pane">
+                                    <div class="control-group">
+                                        <label class="control-label" for="optionsCheckboxList">Enabled Analytics</label>
+
+                                        <div class="controls">
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="ebay-interest-detection">
+                                                <span>Interest Detection</span>
+                                            </label>
+                                            <p class="help-block">Detect when the user has shown interest in the current page by remaining active on the page for a given period</p>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
                         </div>
                     </div>
 
@@ -103,6 +162,13 @@
 
         </div> <!-- /container -->
 
-        <script type="text/javascript" src="options.js"></script>
+        <!-- JavaScript -->
+        <script src="jquery.js"></script>
+        <script src="ICanHaz.min.js"></script>
+        <script src="bootstrap/js/bootstrap-tab.js"></script>
+        <script src="options.js"></script>
+
+        <!-- LiveReload -->
+        <script>document.write('<script src="http://localhost:35729/livereload.js?snipver=1"></' + 'script>')</script>
   </body>
 </html>

@@ -3,6 +3,7 @@ console.warn('loaded content script');
 // Ask background script to load scripts.js
 chrome.extension.sendRequest({type: "injectScripts"});
 
+/*
 var rules = [];
 var events = {};
 
@@ -10,8 +11,6 @@ var events = {};
 chrome.extension.sendRequest({type: "getOptions"}, function(data) {
   rules = JSON.parse(data.rules);
   events = JSON.parse(data.events);
-  localStorage.rules = data.rules;
-  localStorage.events = data.events;
 
   initRules();
   initEvents();
@@ -49,4 +48,6 @@ function initEvents() {
   }, delay);
 
 }
+
+*/
 
