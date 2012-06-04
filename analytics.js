@@ -196,6 +196,56 @@ function scroll_hand()
 
 -----------------------------------------------------------------------------*/
 var solace_interest_detection = (function() {
+// JavaScript Document
+// This code results in modification of page elements after user inactivity to bring attention of user to a certain item on the page.
+
+var delay = 1000;
+var flag = 0;
+
+function flag_setting(){
+	flag = 1;
+};
+
+// This is the timeout
+// Should be replaced by an interval that can be reset
+var timeoutID = window.setTimeout(flag_setting, delay);
+
+// This event handler is to detect mouse activity
+// If mouse moves, call the function !! to take action
+// This does same thing: window.onmousemove = mouse_move;
+window.addEventListener("mousemove", mouse_move);
+
+// This fucntion is called upon mouse acitivity
+// If flag == 1
+function mouse_move()
+{
+	if(flag === 0 /* && Detect Time is not up*/)
+	{
+		// call function to do modifications
+		console.log("Nothing");
+	}
+	else
+	{
+		flag = 0;
+		modifyPage();
+	}
+	
+	resetTimer();
+	
+};
+
+// resetTimer() resets the timer
+function resetTimer()
+{
+	window.clearTimeout(timeoutID);
+	timeoutID = setTimeout(flag_setting, delay);
+	
+};
+
+function modifyPage() {
+	alert("modifyPage() is called");
+	
+};
 
 });
 
