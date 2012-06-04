@@ -1,5 +1,5 @@
 console.warn('analytics loaded');
-var rules, events, options;
+var rules, events, options, history;
 
 var optionSet = function(option) {
   return option in options && options[option] === true;
@@ -24,35 +24,6 @@ chrome.extension.sendRequest({type: "getOptions"}, function(data) {
 
 var init = function() {
   console.log(options);
-
-  // History tracking
-  var history;
-  if('history' in localStorage) {
-    history = JSON.parse(localStorage.history);
-  } else {
-    history = {};
-  }
-
-  var port = chrome.extension.connect();
-  port.onMessage.addListener(function(data) {
-    if(data.clearHistory) {
-        console.warn('Clearing history for this page...');
-        history = {};
-        localStorage.history = JSON.stringify(history);
-    }
-  });
-
-  var path = window.location.pathname;
-  // Initialize counter for this page
-  if(!(path in history) || history[path] === null) {
-      history[path] = 0;
-      localStorage.history = JSON.stringify(history);
-  }
-  // Update counter every 1s
-  setInterval(function() {
-      history[path] += 1000;
-      localStorage.history = JSON.stringify(history);
-  }, 1000);
 
 
   if(optionSet('solace-content-viewing') &&
@@ -102,16 +73,16 @@ $(function(){
   '</ul></div>');
 
   $('.slide-out-div').tabSlideOut({
-    tabHandle: '.handle',                     //class of the element that will become your tab
+    tabHandle: '.handle', // class of the element that will become your tab
     pathToTabImage: chrome.extension.getURL('tab.png'),
-    imageHeight: '146px',                     //height of tab image           //Optionally can be set using css
-    imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
-    tabLocation: 'left',                      //side of screen where tab lives, top, right, bottom, or left
-    speed: 300,                               //speed of animation
-    action: 'click',                          //options: 'click' or 'hover', action to trigger animation
-    topPos: '1000px',                          //position from the top/ use if tabLocation is left or right
-    leftPos: '20px',                          //position from left/ use if tabLocation is bottom or top
-    fixedPosition: false,                      //options: true makes it stick(fixed position) on scroll
+    imageHeight: '146px', // height of tab image           //Optionally can be set using css
+    imageWidth: '40px', // width of tab image            //Optionally can be set using css
+    tabLocation: 'left', // side of screen where tab lives, top, right, bottom, or left
+    speed: 300, // speed of animation
+    action: 'click', // options: 'click' or 'hover', action to trigger animation
+    topPos: '1000px', // position from the top/ use if tabLocation is left or right
+    leftPos: '20px', // position from left/ use if tabLocation is bottom or top
+    fixedPosition: false, // options: true makes it stick(fixed position) on scroll
     onLoadSlideOut: false
   });
 
@@ -207,6 +178,62 @@ var solace_interest_detection = (function() {
 
 -----------------------------------------------------------------------------*/
 var solace_page_sets = (function() {
+  // History tracking
+  if('history' in localStorage) {
+    history = JSON.parse(localStorage.history);
+  } else {
+    history = {};
+  }
+
+  var port = chrome.extension.connect();
+  port.onMessage.addListener(function(data) {
+    if(data.clearHistory) {
+        console.warn('Clearing history for this page...');
+        history = {};
+        localStorage.history = JSON.stringify(history);
+    }
+  });
+
+  var path = window.location.pathname;
+  // Initialize counter for this page
+  if(!(path in history)) {
+      history[path] = 0;
+      localStorage.history = JSON.stringify(history);
+  }
+  // Update counter every 1s
+  setInterval(function() {
+      history[path] = (history[path] || 0) + 1000;
+      localStorage.history = JSON.stringify(history);
+  }, 1000);
+
+  // Check if user has visited all messaging-middleware pages
+  var messaging_pages = [
+    '/solutions/messaging-middleware/',
+    '/solutions/messaging-middleware/reliable-messaging/',
+    '/solutions/messaging-middleware/guaranteed-messaging/',
+    '/solutions/messaging-middleware/mq-messaging/',
+
+    //'/solutions/messaging-middleware/ipc-shared-memory-messaging/',
+    //'/solutions/messaging-middleware/jms/',
+    //'/solutions/messaging-middleware/ultra-low-latency-messaging/'
+  ];
+  var min_interest_time = 2000;
+
+  for(var i=0; i<messaging_pages.length; i++) {
+    var page = messaging_pages[i];
+    if(page === window.location.pathname) {
+      // automatically count the currently open page
+      continue;
+    }
+    if(!(page in history) || history[page] < min_interest_time) {
+      // page has not been visited, or was only temporarily visited
+      console.log('Missing ' + messaging_pages[i]);
+      return;
+    }
+  }
+
+  // DO CONTENT MODIFICATION
+  console.log('User is totally interested in messaging!')
 
 });
 
