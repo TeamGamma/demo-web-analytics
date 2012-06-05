@@ -197,6 +197,7 @@ var solace_page_sets = (function() {
   var path = window.location.pathname;
   // Initialize counter for this page
   if(!(path in history)) {
+      history = JSON.parse(localStorage.history);
       history[path] = 0;
       localStorage.history = JSON.stringify(history);
   }
@@ -217,7 +218,7 @@ var solace_page_sets = (function() {
     //'/solutions/messaging-middleware/jms/',
     //'/solutions/messaging-middleware/ultra-low-latency-messaging/'
   ];
-  var min_interest_time = 2000;
+  var min_interest_time = 1000;
 
   for(var i=0; i<messaging_pages.length; i++) {
     var page = messaging_pages[i];
@@ -235,5 +236,29 @@ var solace_page_sets = (function() {
   // DO CONTENT MODIFICATION
   console.log('User is totally interested in messaging!')
 
+  $('.wrapper').prepend('<div id=gamma-topbar>' +
+  '<h3>Looking for more information about our Messaging Middleware?</h3>' + 
+  '<ul>' +
+  '<li><a>Check out our white papers</a></li>' +
+  '<li><a>Get in touch with a representative</a></li>' +
+  '<li><a>Take a look at our partner program</a></li>' +
+  '</ul>' +
+  '<img class="thumbnail" src="/images/library/wp-thumbnail_unified-messaging-platform.png">' +
+  '<img class="thumbnail" src="/images/library/wp-thumbnail_web-messaging.png">' +
+  '<img class="thumbnail" src="/images/library/wp-thumbnail_tcp-fanout.png">' +
+  '</div>').children('#gamma-topbar')
+  .css({
+    'height': '90px',
+    'padding': '10px',
+    'background-color': '#DDD',
+    'border-bottom': '1px solid #CCC',
+    'box-shadow': 'inset 0 -3px 6px rgba(0, 0, 0, 0.1)',
+    '-webkit-transition': '1s height',
+  }).hide().fadeIn('slow')
+  .children('.thumbnail').css({
+    height: '70px',
+    display: 'inline',
+    'margin': '-80px 10px 0px 0px',
+  }).first().css('margin-left', '740px');
 });
 
