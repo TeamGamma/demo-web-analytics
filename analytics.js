@@ -36,7 +36,8 @@ var init = function() {
   } else { console.log('solace-content-viewing disabled'); }
 
   if(optionSet('solace-interest-detection') &&
-     window.location.host === 'solacesystems.com') {
+     window.location.host === 'solacesystems.com' &&
+     window.location.pathname === '/products/solace-3200-series/') {
 
     console.log('solace-interest-detection enabled');
     solace_interest_detection();
@@ -167,19 +168,27 @@ function scroll_hand()
 
 -----------------------------------------------------------------------------*/
 var solace_interest_detection = (function() {
-// JavaScript Document
-// This code results in modification of page elements after user inactivity to bring attention of user to a certain item on the page.
+// This code results in modification of page elements after user inactivity to
+// bring attention of user to a certain item on the page.
 
-var delay = 1000;
+var highlightContent = function(selector) {
+  var li = $(selector).css('background-color', 'orange');
+  setTimeout(function() {
+    li.css('-webkit-transition', '1s background-color').css('background-color', '');
+  }, 1000)
+};
+
+var delay = 5000;
 var flag = 0;
 
-function flag_setting(){
+function user_idle(){
+  console.log('User has become idle');
 	flag = 1;
 };
 
 // This is the timeout
 // Should be replaced by an interval that can be reset
-var timeoutID = window.setTimeout(flag_setting, delay);
+var timeoutID = null;
 
 // This event handler is to detect mouse activity
 // If mouse moves, call the function !! to take action
@@ -190,15 +199,20 @@ window.addEventListener("mousemove", mouse_move);
 // If flag == 1
 function mouse_move()
 {
+  if(timeoutID == null) {
+    console.log('tracking mouse movements');
+    timeoutID = window.setTimeout(user_idle, delay);
+    return;
+  }
 	if(flag === 0 /* && Detect Time is not up*/)
 	{
-		// call function to do modifications
-		console.log("Nothing");
+		// call function to do modifications on first mouse move
 	}
 	else
 	{
 		flag = 0;
 		modifyPage();
+    window.removeEventListener('mousemove', mouse_move);
 	}
 	
 	resetTimer();
@@ -209,12 +223,16 @@ function mouse_move()
 function resetTimer()
 {
 	window.clearTimeout(timeoutID);
-	timeoutID = setTimeout(flag_setting, delay);
+	timeoutID = setTimeout(user_idle, delay);
 	
 };
 
 function modifyPage() {
-	alert("modifyPage() is called");
+	console.log("modifyPage() is called");
+  highlightContent('h3:contains(Solace 3260)');
+  highlightContent('li:contains(Scalability)');
+  highlightContent('li:contains(High Performance)');
+
 	
 };
 
